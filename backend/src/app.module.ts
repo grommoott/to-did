@@ -5,8 +5,20 @@ import { TodosController } from "./todos/todos.controller";
 import { TodosService } from "./todos/todos.service";
 import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({
+    imports: [
+        TypeOrmModule.forRoot({
+            type: "postgres",
+            host: process.env.DB_HOST,
+            port: Number(process.env.DB_PORT),
+            database: process.env.DB_DATABASE,
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            entities: []
+        })
+    ],
     controllers: [UsersController, TodosController, AuthController],
     providers: [UsersService, TodosService, AuthService]
 })
