@@ -1,27 +1,37 @@
 import { Module } from "@nestjs/common";
-import { UsersController } from "./users/users.controller";
-import { UsersService } from "./users/users.service";
-import { TodosController } from "./todos/todos.controller";
-import { TodosService } from "./todos/todos.service";
-import { AuthController } from "./auth/auth.controller";
-import { AuthService } from "./auth/auth.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./users/entity/user.entity";
 import { Tokens } from "./auth/entity/tokens.entity";
+import { JwtModule } from "@nestjs/jwt";
+import { AuthModule } from "./auth/auth.module";
+import { TodosModule } from "./todos/todos.module";
+import { UsersModule } from "./users/users.module";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: "postgres",
-            host: process.env.DB_HOST,
-            port: Number(process.env.DB_PORT),
-            database: process.env.DB_DATABASE,
-            username: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD,
-            entities: [User, Tokens]
-        })
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                type: "postgres",
+                host: configService.get("DB_HOST"),
+                port: configService.get("DB_PORT"),
+                database: configService.get("DB_DATABASE"),
+                username: configService.get("DB_USERNAME"),
+                password: configService.get("DB_PASSWORD"),
+                entities: [User, Tokens],
+                logging: true,
+                synchronize: true
+            }),
+            inject: [ConfigService]
+        }),
+        JwtModule.register({
+            global: true,
+            secret: process.env.JWT_SECRET
+        }),
+        AuthModule,
+        TodosModule,
+        UsersModule
     ],
-    controllers: [UsersController, TodosController, AuthController],
-    providers: [UsersService, TodosService, AuthService]
 })
 export class AppModule { }
