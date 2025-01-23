@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Todo } from "src/todos/entity/todo.entity";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: "users" })
 export class User {
@@ -10,4 +11,7 @@ export class User {
 
     @Column({ type: "varchar", length: 72, name: "password_hash" })
     passwordHash: string
+
+    @OneToMany(() => Todo, (todo) => todo.user)
+    todos: Todo[]
 }
