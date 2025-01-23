@@ -6,9 +6,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Todo } from "./entity/todo.entity";
 import { User } from "src/users/entity/user.entity";
 import { JwtService } from "@nestjs/jwt";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
-    imports: [AuthModule, TypeOrmModule.forFeature([Todo, User])],
+    imports: [AuthModule, TypeOrmModule.forFeature([Todo, User]), AuthModule, ConfigModule],
     providers: [TodosService, JwtService],
     controllers: [TodosController]
 })

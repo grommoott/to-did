@@ -6,9 +6,10 @@ import { UsersController } from "./users.controller";
 import { HashService } from "src/helpers/hash/hash.service";
 import { AuthModule } from "src/auth/auth.module";
 import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]), JwtModule, AuthModule],
+    imports: [TypeOrmModule.forFeature([User]), JwtModule, ConfigModule, AuthModule],
     providers: [UsersService, HashService],
     controllers: [UsersController]
 })
