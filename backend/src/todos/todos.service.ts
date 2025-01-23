@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { Todo } from "./entity/todo.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -34,10 +34,14 @@ export class TodosService {
     }
 
     async putTodo(putTodoDto: PutTodoDto, userId: number): Promise<undefined> {
-        const todo = await this.todoRepository.findOneBy({ user: { id: userId } })
+        const todo = await this.todoRepository.findOne({ relations: { user: true }, where: { id: putTodoDto.id } })
 
         if (todo == null) {
             throw new NotFoundException()
+        }
+
+        if (todo.user.id != userId) {
+            throw new ForbiddenException()
         }
 
         for (const key in putTodoDto) {
@@ -49,5 +53,19 @@ export class TodosService {
         }
 
         await this.todoRepository.save(todo)
+    }
+
+    async deleteTodo(todoId: number, userId: number): Promise<undefined> {
+        const todo = await this.todoRepository.findOne({ relations: { user: true }, where: { id: todoId } })
+
+        if (todo == null) {
+            throw new NotFoundException()
+        }
+
+        if (todo.user.id != userId) {
+            throw new ForbiddenException()
+        }
+
+        await this.todoRepository.remove(todo)
     }
 }

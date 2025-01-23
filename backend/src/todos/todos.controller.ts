@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { TodosService } from "./todos.service";
 import { AuthGuard } from "src/auth/auth.guard";
@@ -37,5 +37,11 @@ export class TodosController {
     @Put()
     async put(@Req() req: Request, @Body() putTodoDto: PutTodoDto) {
         await this.todosService.putTodo(putTodoDto, req["user"].id)
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete(":id")
+    async delete(@Req() req: Request, @Param("id") id: string) {
+        await this.todosService.deleteTodo(+id, req["user"].id)
     }
 }
