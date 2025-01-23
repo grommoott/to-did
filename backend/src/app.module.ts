@@ -6,6 +6,8 @@ import { TodosService } from "./todos/todos.service";
 import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "./users/entity/user.entity";
+import { Tokens } from "./auth/entity/tokens.entity";
 
 @Module({
     imports: [
@@ -16,7 +18,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
             database: process.env.DB_DATABASE,
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
-            entities: []
+            entities: [User, Tokens]
         })
     ],
     controllers: [UsersController, TodosController, AuthController],
