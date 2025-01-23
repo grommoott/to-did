@@ -13,7 +13,6 @@ export class UsersService {
         const user = new User()
         user.username = createUserDto.username;
         user.passwordHash = await this.hashService.hash(createUserDto.password)
-        this.userRepository.save(user)
-        return user
+        return this.userRepository.save(user)
     }
 }
