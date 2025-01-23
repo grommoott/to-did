@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./users/entity/user.entity";
 import { Tokens } from "./auth/entity/tokens.entity";
-import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { TodosModule } from "./todos/todos.module";
 import { UsersModule } from "./users/users.module";
@@ -24,10 +23,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
                 synchronize: true
             }),
             inject: [ConfigService]
-        }),
-        JwtModule.register({
-            global: true,
-            secret: process.env.JWT_SECRET
         }),
         AuthModule,
         TodosModule,
