@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { TodosService } from "./todos.service";
 import { AuthGuard } from "src/auth/auth.guard";
 import { ITodo } from "./interfaces/todo.interface";
+import { PutTodoDto } from "./dto/put-todo.dto";
 
 @Controller("todos")
 export class TodosController {
@@ -30,5 +31,11 @@ export class TodosController {
             content: todo.content,
             isCompleted: todo.isCompleted
         }))
+    }
+
+    @UseGuards(AuthGuard)
+    @Put()
+    async put(@Req() req: Request, @Body() putTodoDto: PutTodoDto) {
+        await this.todosService.putTodo(putTodoDto, req["user"].id)
     }
 }
