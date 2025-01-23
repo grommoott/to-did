@@ -6,6 +6,8 @@ import { AuthModule } from "./auth/auth.module";
 import { TodosModule } from "./todos/todos.module";
 import { UsersModule } from "./users/users.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { Todo } from "./todos/entity/todo.entity";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
     imports: [
@@ -18,9 +20,17 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
                 database: configService.get("DB_DATABASE"),
                 username: configService.get("DB_USERNAME"),
                 password: configService.get("DB_PASSWORD"),
-                entities: [User, Tokens],
+                entities: [User, Tokens, Todo],
                 logging: true,
                 synchronize: true
+            }),
+            inject: [ConfigService]
+        }),
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                global: true,
+                secret: configService.get("JWT_SECRET")
             }),
             inject: [ConfigService]
         }),
