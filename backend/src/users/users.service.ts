@@ -11,8 +11,9 @@ export class UsersService {
 
     async createUser(createUserDto: CreateUserDto): Promise<User> {
         const user = new User()
-        user.username = user.username;
+        user.username = createUserDto.username;
         user.passwordHash = await this.hashService.hash(createUserDto.password)
-        return this.userRepository.save(user)
+        this.userRepository.save(user)
+        return user
     }
 }
