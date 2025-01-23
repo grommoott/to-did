@@ -4,8 +4,6 @@ import { User } from "./entity/user.entity";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { HashService } from "src/helpers/hash/hash.service";
-import { GetUserDto } from "./dto/get-user.dto";
-import { IUser } from "./interfaces/user.interface";
 
 @Injectable()
 export class UsersService {
@@ -18,7 +16,7 @@ export class UsersService {
         return this.userRepository.save(user)
     }
 
-    async getUser(id: number): Promise<IUser> {
+    async getUser(id: number): Promise<User> {
         const user = await this.userRepository.findOneBy({ id: id })
 
         if (user == null) {
