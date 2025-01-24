@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/users/entity/user.entity";
 import { Repository } from "typeorm";
@@ -15,7 +15,6 @@ export class AuthService {
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService
     ) { }
-
     async login(loginDto: LoginDto): Promise<Tokens> {
         const userTarget = new User()
         userTarget.username = loginDto.username
@@ -34,5 +33,27 @@ export class AuthService {
         await this.tokensRepository.update({ user }, { ...tokens })
 
         return tokens
+    }
+
+    async refresh(refreshToken: string): Promise<Tokens> {
+        let tokens
+        let payload
+
+        try {
+            payload = this.jwtService.verify(refreshToken, { secret: this.configService.get("JWT_SECRET") })
+            tokens = await this.tokensRepository.findOneBy({ user: { id: payload.id } })
+        } catch (e) {
+            console.log(e)
+            throw new UnauthorizedException()
+        }
+
+        if (tokens == null) {
+            throw new NotFoundException()
+        }
+
+        tokens.access = await this.jwtService.signAsync({ id: payload.id }, { expiresIn: "20m", secret: this.configService.get("JWT_SECRET") })
+        tokens.refresh = await this.jwtService.signAsync({ id: payload.id }, { expiresIn: "15d", secret: this.configService.get("JWT_SECRET") })
+
+        return await this.tokensRepository.save(tokens)
     }
 }
