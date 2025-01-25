@@ -1,25 +1,30 @@
-import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
-
-const roboto = Roboto({
-    weight: "500"
-})
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
+import type { Metadata } from "next"
+import theme from "@/theme"
+import { CssBaseline, ThemeProvider } from "@mui/material"
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript"
 
 export const metadata: Metadata = {
     title: "To Did!",
     description: "Мы всё уже сделали за тебя)",
-};
+}
 
 export default function RootLayout({
     children,
 }: Readonly<{
-    children: React.ReactNode;
+    children: React.ReactNode
 }>) {
     return (
-        <html lang="en">
-            <body className={`${roboto.className}`}>
-                {children}
+        <html lang="en" suppressHydrationWarning>
+            <body>
+                <InitColorSchemeScript attribute="class" defaultMode="dark" />
+                <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        {children}
+                    </ThemeProvider>
+                </AppRouterCacheProvider>
             </body>
         </html>
-    );
+    )
 }
