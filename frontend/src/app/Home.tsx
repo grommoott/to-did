@@ -64,8 +64,8 @@ export default function Home() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
+                    gap: 4,
                 }}
-                gap={4}
             >
                 <Typography variant="h3" sx={{ textAlign: "center" }}>
                     Почему мы?
@@ -84,12 +84,12 @@ export default function Home() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
+                    gap: 4,
                 }}
             >
-                <Typography
-                    variant="h3"
-                    sx={{ textAlign: "center" }}
-                ></Typography>
+                <Typography variant="h3" sx={{ textAlign: "center" }}>
+                    Уже не терпится начать?
+                </Typography>
 
                 {toDoSteps.map((val, id) => (
                     <ToDoStep {...val} key={id} />

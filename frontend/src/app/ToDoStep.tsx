@@ -59,10 +59,10 @@ const ToDoStep: FC<Props> = ({ type, imagePath, title, content }) => {
                     width: 480,
                 }}
             >
-                <Typography color="primary" variant="h3">
+                <Typography color="primary" variant="h4" sx={{ mb: 2 }}>
                     {title}
                 </Typography>
-                <Typography variant="h5">{content}</Typography>
+                <Typography>{content}</Typography>
             </Stack>
             {type == "imgRight" && (
                 <Paper
