@@ -3,6 +3,10 @@ import type { Metadata } from "next"
 import theme from "@/theme"
 import { CssBaseline, ThemeProvider } from "@mui/material"
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript"
+import Header from "@/components/Header"
+import { GlobalContextProvider } from "@/globalContext"
+import Footer from "@/components/Footer"
+import "./global.scss"
 
 export const metadata: Metadata = {
     title: "To Did!",
@@ -21,7 +25,10 @@ export default function RootLayout({
                 <AppRouterCacheProvider options={{ enableCssLayer: true }}>
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
-                        {children}
+                        <GlobalContextProvider>
+                            <Header />
+                            {children}
+                        </GlobalContextProvider>
                     </ThemeProvider>
                 </AppRouterCacheProvider>
             </body>
