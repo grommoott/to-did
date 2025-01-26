@@ -32,7 +32,7 @@ const theme = createTheme({
                     backgroundColor: "#161619",
                 },
             }
-        }
+        },
 
     }
 })
