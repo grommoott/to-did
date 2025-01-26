@@ -1,5 +1,11 @@
-import Home from "./home";
+import Footer from "@/components/Footer"
+import Home from "./Home"
 
 export default function Page() {
-    return <Home />
+    return (
+        <>
+            <Home />
+            <Footer />
+        </>
+    )
 }
