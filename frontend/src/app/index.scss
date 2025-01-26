@@ -1,0 +1,27 @@
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+.to-do-step-sizing {
+    animation-name: to-do-step-resize;
+    animation-timing-function: ease-in-out();
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes to-do-step-resize {
+    from {
+        transform: scale(0.35);
+    }
+    50% {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0.35);
+    }
+}
