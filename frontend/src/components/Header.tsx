@@ -1,29 +1,46 @@
 "use client"
 import { config } from "@/config"
 import { globalContext } from "@/globalContext"
-import { Login } from "@mui/icons-material"
-import { AppBar, Box, Button, Icon, Toolbar, Typography } from "@mui/material"
+import { AccountCircle, Login } from "@mui/icons-material"
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material"
 import Image from "next/image"
+import Link from "next/link"
 import { FC, useContext, useEffect } from "react"
 
 interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
-    const { isLoggedIn, username, setId, setUsername } =
+    const { isLoggedIn, username, setId, setUsername, setLoggedIn } =
         useContext(globalContext)
 
     useEffect(() => {
         ;(async () => {
             try {
-                await fetch(`${config.backendUrl}/auth/refresh`, {
-                    method: "post",
+                const response = await fetch(
+                    `${config.backendUrl}/auth/refresh`,
+                    {
+                        method: "post",
+                        credentials: "include",
+                    },
+                )
+
+                if (response.status === 401) {
+                    return
+                }
+
+                const data = await fetch(`${config.backendUrl}/users`, {
+                    credentials: "include",
                 })
-                const { id, username } = await (
-                    await fetch(`${config.backendUrl}/users`)
-                ).json()
+
+                if (data.status !== 200) {
+                    return
+                }
+
+                const { id, username } = await data.json()
 
                 setId?.call(this, id)
                 setUsername?.call(this, username)
+                setLoggedIn?.call(this, true)
             } catch (e) {}
         })()
     }, [])
@@ -44,27 +61,34 @@ const Header: FC<HeaderProps> = () => {
                         backgroundColor: "transparent",
                     }}
                 >
-                    <Button sx={{ p: 1, gap: 1 }}>
-                        <Image
-                            src={"/logo-green.svg"}
-                            alt="logo"
-                            height={32}
-                            width={32}
-                        />
-                        <Typography>To Did</Typography>
-                    </Button>
+                    <Link href="/">
+                        <Button sx={{ p: 1, gap: 1 }}>
+                            <Image
+                                src={"/logo-green.svg"}
+                                alt="logo"
+                                height={32}
+                                width={32}
+                            />
+                            <Typography>To Did</Typography>
+                        </Button>
+                    </Link>
 
                     <Box sx={{ flexGrow: 1 }} />
 
                     {isLoggedIn ? (
-                        <Button>
-                            <Typography>{username}</Typography>
-                        </Button>
+                        <Link href="/dashboard">
+                            <Button sx={{ p: 1, gap: 1 }}>
+                                <AccountCircle />
+                                <Typography>{username}</Typography>
+                            </Button>
+                        </Link>
                     ) : (
-                        <Button sx={{ p: 1, gap: 1 }}>
-                            <Typography>Log in</Typography>
-                            <Login />
-                        </Button>
+                        <Link href="/login">
+                            <Button sx={{ p: 1, gap: 1 }}>
+                                <Typography>Войти</Typography>
+                                <Login />
+                            </Button>
+                        </Link>
                     )}
                 </Toolbar>
             </AppBar>
