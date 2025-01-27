@@ -10,6 +10,7 @@ import {
 
 type GlobalContext = {
     isLoggedIn: boolean
+    setLoggedIn?: Dispatch<SetStateAction<boolean>>
     username?: string
     setUsername?: Dispatch<SetStateAction<string | undefined>>
     id?: number
@@ -23,10 +24,18 @@ const globalContext = createContext<GlobalContext>({
 const GlobalContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [username, setUsername] = useState<string>()
     const [id, setId] = useState<number>()
+    const [isLoggedIn, setLoggedIn] = useState(false)
 
     return (
         <globalContext.Provider
-            value={{ isLoggedIn: false, username, setUsername, id, setId }}
+            value={{
+                isLoggedIn,
+                setLoggedIn,
+                username,
+                setUsername,
+                id,
+                setId,
+            }}
         >
             {children}
         </globalContext.Provider>
