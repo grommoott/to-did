@@ -6,6 +6,7 @@ import { LoginDto } from "./dto/login.dto";
 import { Tokens } from "./entity/tokens.entity";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
+import { HashService } from "src/helpers/hash/hash.service";
 
 @Injectable()
 export class AuthService {
@@ -13,17 +14,21 @@ export class AuthService {
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Tokens) private readonly tokensRepository: Repository<Tokens>,
         private readonly jwtService: JwtService,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly hashService: HashService
     ) { }
     async login(loginDto: LoginDto): Promise<Tokens> {
         const userTarget = new User()
         userTarget.username = loginDto.username
-        userTarget.passwordHash
 
         const user = await this.userRepository.findOneBy(userTarget)
 
         if (user == null) {
             throw new NotFoundException()
+        }
+
+        if (!(await this.hashService.compare(user.passwordHash, loginDto.password))) {
+            throw new UnauthorizedException()
         }
 
         const tokens = new Tokens()
