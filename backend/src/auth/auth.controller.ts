@@ -30,4 +30,10 @@ export class AuthController {
         res.cookie("Access-Token", tokens.access, this.cookieOptions)
         res.cookie("Refresh-Token", tokens.refresh, { ...this.cookieOptions, path: "/auth/refresh" })
     }
+
+    @Post("logout")
+    async logout(@Res({ passthrough: true }) res: Response) {
+        res.clearCookie("Access-Token")
+        res.clearCookie("Refresh-Token")
+    }
 }
