@@ -1,12 +1,4 @@
-import {
-    Container,
-    Typography,
-    Box,
-    Grow,
-    Card,
-    Stack,
-    Button,
-} from "@mui/material"
+import { Container, Typography, Box, Grow, Stack } from "@mui/material"
 import Image from "next/image"
 import ProsCard from "./ProsCard"
 import { prosArray } from "./pros"
