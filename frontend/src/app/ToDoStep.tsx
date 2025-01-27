@@ -5,12 +5,19 @@ import "./index.scss"
 
 interface Props {
     type: "imgLeft" | "imgRight"
+    transformOriginClass: "left-top" | "right-top" | "center"
     imagePath: string
     title: string
     content: string
 }
 
-const ToDoStep: FC<Props> = ({ type, imagePath, title, content }) => {
+const ToDoStep: FC<Props> = ({
+    type,
+    imagePath,
+    title,
+    content,
+    transformOriginClass,
+}) => {
     return (
         <Paper
             sx={{
@@ -35,19 +42,17 @@ const ToDoStep: FC<Props> = ({ type, imagePath, title, content }) => {
                         overflow: "hidden",
                     }}
                 >
-                    <Image
-                        unoptimized={true}
-                        src={imagePath}
-                        width={1500}
-                        height={1000}
-                        alt="toDoStep"
-                        className="right to-do-step-sizing"
-                        style={{
-                            transformOrigin: "top right",
-                            transform: "scale(0.35)",
-                        }}
-                        draggable={false}
-                    />
+                    <div className={`${transformOriginClass}`}>
+                        <Image
+                            unoptimized={true}
+                            src={imagePath}
+                            width={1500}
+                            height={1000}
+                            alt="toDoStep"
+                            className={`to-do-step-sizing`}
+                            draggable={false}
+                        />
+                    </div>
                 </Paper>
             )}
             <Stack
@@ -74,19 +79,17 @@ const ToDoStep: FC<Props> = ({ type, imagePath, title, content }) => {
                         overflow: "hidden",
                     }}
                 >
-                    <Image
-                        unoptimized={true}
-                        src={imagePath}
-                        width={1500}
-                        height={1000}
-                        alt="toDoStep"
-                        className="left to-do-step-sizing"
-                        style={{
-                            transformOrigin: "top left",
-                            transform: "scale(0.35)",
-                        }}
-                        draggable={false}
-                    />
+                    <div className={`${transformOriginClass}`}>
+                        <Image
+                            unoptimized={true}
+                            src={imagePath}
+                            width={1500}
+                            height={1000}
+                            alt="toDoStep"
+                            className={`to-do-step-sizing`}
+                            draggable={false}
+                        />
+                    </div>
                 </Paper>
             )}
         </Paper>

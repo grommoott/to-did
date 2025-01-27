@@ -1,9 +1,37 @@
-.right {
+.right-top {
     float: right;
+    transform-origin: top right;
 }
 
-.left {
+.right-top > img {
+    transform-origin: top right;
+}
+
+.left-top {
     float: left;
+    transform-origin: top left;
+}
+
+.left-top > img {
+    transform-origin: top left;
+}
+
+.to-do-3 {
+    position: absolute;
+    transform: translate(-65%, -25%);
+    left: 50%;
+    top: 50%;
+}
+
+.to-do-3 > img {
+    transform-origin: 65% 10%;
+}
+
+.center {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
 }
 
 .to-do-step-sizing {
@@ -17,7 +45,8 @@
     from {
         transform: scale(0.35);
     }
-    50% {
+
+    70% {
         transform: scale(1);
     }
 
