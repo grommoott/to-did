@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UsersService } from "./users.service";
 import { IUser } from "./interfaces/user.interface";
 import { AuthGuard } from "src/auth/auth.guard";
+import { validate } from "class-validator";
 
 @Controller("users")
 export class UsersController {
@@ -10,6 +11,12 @@ export class UsersController {
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
+        const errors = await validate(createUserDto)
+
+        if (errors.length > 0) {
+            throw new BadRequestException()
+        }
+
         this.usersService.createUser(createUserDto)
     }
 

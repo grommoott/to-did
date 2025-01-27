@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { TodosService } from "./todos.service";
 import { AuthGuard } from "src/auth/auth.guard";
 import { ITodo } from "./interfaces/todo.interface";
 import { PutTodoDto } from "./dto/put-todo.dto";
+import { validate } from "class-validator";
 
 @Controller("todos")
 export class TodosController {
@@ -12,6 +13,12 @@ export class TodosController {
     @UseGuards(AuthGuard)
     @Post()
     async create(@Body() createTodoDto: CreateTodoDto, @Req() req: Request): Promise<ITodo> {
+        const errors = await validate(createTodoDto)
+
+        if (errors.length > 0) {
+            throw new BadRequestException()
+        }
+
         const todo = await this.todosService.createTodo(createTodoDto, req["user"].id)
 
         return {
@@ -36,6 +43,12 @@ export class TodosController {
     @UseGuards(AuthGuard)
     @Put()
     async put(@Req() req: Request, @Body() putTodoDto: PutTodoDto) {
+        const errors = await validate(putTodoDto)
+
+        if (errors.length > 0) {
+            throw new BadRequestException()
+        }
+
         await this.todosService.putTodo(putTodoDto, req["user"].id)
     }
 
