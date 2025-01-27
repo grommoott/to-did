@@ -29,10 +29,10 @@ const Footer: FC = () => {
                     <Image
                         src="/logo-green.svg"
                         alt="logo-green"
-                        width={64}
-                        height={64}
+                        width={48}
+                        height={48}
                     />
-                    <Typography variant="h4" color="primary">
+                    <Typography sx={{ fontSize: 24 }} color="primary">
                         TO DID
                     </Typography>
                 </Stack>
