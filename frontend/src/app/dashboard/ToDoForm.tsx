@@ -12,11 +12,11 @@ const ToDoForm: FC<Props> = ({ onCreate }) => {
     return (
         <Paper
             sx={{
-                width: { xs: "80vw", sm: "40vw" },
+                width: { xs: "80vw", md: "60vw", lg: "40vw" },
                 p: 2,
                 display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: { xs: "column", sm: "row" },
+                alignItems: { xs: "stretch", sm: "center" },
                 gap: 2,
             }}
             component="form"

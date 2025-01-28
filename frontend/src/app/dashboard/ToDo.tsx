@@ -20,7 +20,7 @@ const ToDo: FC<Props> = ({
     return (
         <Paper
             sx={{
-                width: { xs: "80vw", sm: "40vw" },
+                width: { xs: "80vw", md: "60vw", lg: "40vw" },
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
