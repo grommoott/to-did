@@ -24,6 +24,8 @@ const Header: FC<HeaderProps> = () => {
                     },
                 )
 
+                console.log(response)
+
                 if (response.status === 401) {
                     return
                 }
