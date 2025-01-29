@@ -52,7 +52,7 @@ export class AuthService {
             throw new UnauthorizedException()
         }
 
-        if (tokens == null) {
+        if (tokens === null) {
             throw new NotFoundException()
         }
 
