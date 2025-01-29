@@ -14,7 +14,7 @@ const Header: FC<HeaderProps> = () => {
         useContext(globalContext)
 
     useEffect(() => {
-        ;(async () => {
+        const refresh = async () => {
             try {
                 const response = await fetch(
                     `${config.backendUrl}/auth/refresh`,
@@ -23,8 +23,6 @@ const Header: FC<HeaderProps> = () => {
                         credentials: "include",
                     },
                 )
-
-                console.log(response)
 
                 if (response.status === 401) {
                     return
@@ -44,7 +42,12 @@ const Header: FC<HeaderProps> = () => {
                 setUsername?.call(this, username)
                 setLoggedIn?.call(this, true)
             } catch (e) {}
-        })()
+        }
+
+        refresh()
+        const interval = setInterval(refresh, 600_000)
+
+        return () => clearInterval(interval)
     }, [])
 
     return (
